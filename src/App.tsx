@@ -21,10 +21,10 @@ export default function App() {
     return extractedWord.toString();
   };
 
-  const handleAddItemToList = (feedback: string) => {
+  const handleAddItemToList = async (feedback: string) => {
     const newItem: UserFeedback = {
       upvoteCount: Math.floor(Math.random() * 10) + 69,
-      badgeLetter: extractCompany(feedback).toUpperCase(),
+      badgeLetter: extractCompany(feedback)[0].toUpperCase(),
       company: extractCompany(feedback),
       text: feedback,
       daysAgo: Math.floor(Math.random() * 10) + 1,
@@ -32,6 +32,15 @@ export default function App() {
     };
 
     setUserFeedback([...userFeedback, newItem]);
+
+    await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(newItem),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   // Fetch Data from API

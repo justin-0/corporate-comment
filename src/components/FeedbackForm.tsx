@@ -25,6 +25,7 @@ export default function FeedbackForm({
       onSubmit={(evt) => {
         evt.preventDefault();
         handleAddItemToList(feedback);
+        setFeedback("");
       }}
     >
       <textarea
