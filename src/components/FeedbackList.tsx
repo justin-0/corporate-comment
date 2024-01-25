@@ -2,13 +2,15 @@ import FeedbackItem from "./FeedbackItem";
 import LoadingSpinner from "./LoadingSpinner";
 import { UserFeedback } from "../lib/types";
 
+type FeedbackListProps = {
+  status: string;
+  userFeedback: UserFeedback[];
+};
+
 export default function FeedbackList({
   status,
   userFeedback,
-}: {
-  status: string;
-  userFeedback: UserFeedback[];
-}) {
+}: FeedbackListProps) {
   return (
     <ol className="feedback-list">
       {status === "loading" && <LoadingSpinner />}

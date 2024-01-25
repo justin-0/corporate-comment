@@ -2,7 +2,13 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { MAX_CHARACTERS } from "../lib/constants";
 
-export default function FeedbackForm() {
+type FeedbackFormProps = {
+  handleAddItemToList: (text: string) => void;
+};
+
+export default function FeedbackForm({
+  handleAddItemToList,
+}: FeedbackFormProps) {
   const [feedback, setFeedback] = useState("");
   const charsLeft = MAX_CHARACTERS - feedback.length;
   const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -14,7 +20,13 @@ export default function FeedbackForm() {
   };
 
   return (
-    <form className="form" onSubmit={(evt) => evt.preventDefault()}>
+    <form
+      className="form"
+      onSubmit={(evt) => {
+        evt.preventDefault();
+        handleAddItemToList(feedback);
+      }}
+    >
       <textarea
         id="feedback-textarea"
         placeholder=" "
@@ -29,7 +41,7 @@ export default function FeedbackForm() {
       </label>
       <div>
         <p className="u-italic">{charsLeft}</p>
-        <button>
+        <button type="submit">
           <span>Submit</span>
         </button>
       </div>

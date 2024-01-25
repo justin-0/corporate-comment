@@ -11,7 +11,7 @@ type Status = "loading" | "complete" | "error";
 
 export default function App() {
   const [userFeedback, setUserFeedback] = useState<Array<UserFeedback>>([]);
-  const [status, setStatus] = useState<Status>();
+  const [status, setStatus] = useState<Status>("loading");
 
   // Extract Company from Feeback input and remove #hashtag
   const extractCompany = (text: string) => {
@@ -53,7 +53,11 @@ export default function App() {
   return (
     <div className="app">
       <Footer />
-      <Container status={status!} userFeedback={userFeedback} />
+      <Container
+        status={status}
+        userFeedback={userFeedback}
+        handleAddItemToList={handleAddItemToList}
+      />
       <HashtagList />
     </div>
   );
