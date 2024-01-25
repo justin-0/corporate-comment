@@ -1,23 +1,30 @@
 import { TriangleUpIcon } from "@radix-ui/react-icons";
 
-export default function FeedbackItem() {
+type UserFeedback = {
+  upvotes: number;
+  badge: string;
+  company: string;
+  feedback: string;
+  timestamp: number;
+};
+
+type UserFeedbackProps = { feedbackItem: UserFeedback };
+
+export default function FeedbackItem({ feedbackItem }: UserFeedbackProps) {
   return (
     <li className="feedback">
       <button>
         <TriangleUpIcon />
-        <span>69</span>
+        <span>{feedbackItem.upvotes}</span>
       </button>
       <div>
-        <p>J</p>
+        <p>{feedbackItem.badge}</p>
       </div>
       <div>
-        <p>JustinCorp</p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia,
-          dolore!
-        </p>
+        <p>{feedbackItem.company}</p>
+        <p>{feedbackItem.feedback}</p>
       </div>
-      <p>420d</p>
+      <p>{feedbackItem.timestamp}d</p>
     </li>
   );
 }
