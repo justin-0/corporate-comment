@@ -23,13 +23,12 @@ export default function FeedbackList() {
 
   return (
     <ol className="feedback-list">
-      {status === "loading" ? (
-        <LoadingSpinner />
-      ) : (
-        userFeedback.map((feedbackItem) => (
-          <FeedbackItem feedbackItem={feedbackItem} />
-        ))
-      )}
+      {status === "loading" ? <LoadingSpinner /> : null}
+      {status === "complete"
+        ? userFeedback.map((feedbackItem) => (
+            <FeedbackItem feedbackItem={feedbackItem} />
+          ))
+        : null}
       {/* {userFeedback.map((feedbackItem) => (
         <FeedbackItem feedbackItem={feedbackItem} />
       ))} */}
