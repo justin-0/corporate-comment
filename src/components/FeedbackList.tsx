@@ -5,7 +5,7 @@ import LoadingSpinner from "./LoadingSpinner";
 const API_URL =
   "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks";
 
-type Status = "loading" | "complete";
+type Status = "loading" | "complete" | "error";
 
 export default function FeedbackList() {
   const [userFeedback, setUserFeedback] = useState([]);
@@ -14,10 +14,15 @@ export default function FeedbackList() {
   useEffect(() => {
     setStatus("loading"),
       (async function getUserData() {
-        const resp = await fetch(API_URL);
-        const { feedbacks } = await resp.json();
-        setUserFeedback(feedbacks);
-        setStatus("complete");
+        try {
+          const resp = await fetch(API_URL);
+          const { feedbacks } = await resp.json();
+          setUserFeedback(feedbacks);
+          setStatus("complete");
+        } catch (error: any) {
+          console.log(error.message);
+          setStatus("error");
+        }
       })();
   }, []);
 
@@ -26,12 +31,14 @@ export default function FeedbackList() {
       {status === "loading" ? <LoadingSpinner /> : null}
       {status === "complete"
         ? userFeedback.map((feedbackItem) => (
-            <FeedbackItem feedbackItem={feedbackItem} />
+            <FeedbackItem key={feedbackItem.id} feedbackItem={feedbackItem} />
           ))
         : null}
-      {/* {userFeedback.map((feedbackItem) => (
-        <FeedbackItem feedbackItem={feedbackItem} />
-      ))} */}
+      {status === "error" && (
+        <h1 style={{ color: "red", textAlign: "center" }}>
+          Error occurred requesting data
+        </h1>
+      )}
     </ol>
   );
 }
