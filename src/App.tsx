@@ -12,10 +12,20 @@ type Status = "loading" | "complete" | "error";
 export default function App() {
   const [userFeedback, setUserFeedback] = useState<Array<UserFeedback>>([]);
   const [status, setStatus] = useState<Status>("loading");
+  const [selectedCompany, setSelectedCompany] = useState("");
+
+  // Filtered Feedback based on Hashtag clicked
+  const filteredUserFeeback = userFeedback.filter((feedback) => {
+    if (selectedCompany === "") {
+      return feedback;
+    } else {
+      return feedback.company === selectedCompany;
+    }
+  });
 
   // Filter out repeated companies from hashtag list
   const hashtagCompanies = userFeedback
-    .map((item) => item.company.toLowerCase())
+    .map((item) => item.company)
     .filter((company, index, array) => {
       return array.indexOf(company) === index;
     });
@@ -71,10 +81,15 @@ export default function App() {
       <Footer />
       <Container
         status={status}
-        userFeedback={userFeedback}
+        userFeedback={filteredUserFeeback}
         handleAddItemToList={handleAddItemToList}
       />
-      <HashtagList hashtagCompanies={hashtagCompanies} status={status} />
+      <HashtagList
+        hashtagCompanies={hashtagCompanies}
+        status={status}
+        setSelectedCompany={setSelectedCompany}
+        selectedCompany={selectedCompany}
+      />
     </div>
   );
 }
