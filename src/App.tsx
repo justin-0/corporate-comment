@@ -16,11 +16,9 @@ export default function App() {
 
   // Filtered Feedback based on Hashtag clicked
   const filteredUserFeeback = userFeedback.filter((feedback) => {
-    if (selectedCompany === "") {
-      return feedback;
-    } else {
-      return feedback.company === selectedCompany;
-    }
+    if (selectedCompany) return feedback.company === selectedCompany;
+
+    return feedback;
   });
 
   // Filter out repeated companies from hashtag list
