@@ -3,6 +3,8 @@ import Container from "./components/Container";
 import Footer from "./components/Footer";
 import HashtagList from "./components/HashtagList";
 import { UserFeedback } from "./lib/types";
+import Header from "./components/Header";
+import FeedbackList from "./components/FeedbackList";
 
 const API_URL =
   "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks";
@@ -85,11 +87,10 @@ export default function App() {
   return (
     <div className="app">
       <Footer />
-      <Container
-        status={status}
-        userFeedback={filteredUserFeeback}
-        handleAddItemToList={handleAddItemToList}
-      />
+      <Container>
+        <Header handleAddItemToList={handleAddItemToList} />
+        <FeedbackList status={status} userFeedback={userFeedback} />
+      </Container>
       <HashtagList
         hashtagCompanies={hashtagCompanies}
         status={status}
