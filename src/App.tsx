@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Container from "./components/Container";
 import Footer from "./components/Footer";
 import HashtagList from "./components/HashtagList";
@@ -15,18 +15,26 @@ export default function App() {
   const [selectedCompany, setSelectedCompany] = useState("");
 
   // Filtered Feedback based on Hashtag clicked
-  const filteredUserFeeback = userFeedback.filter((feedback) => {
-    if (selectedCompany) return feedback.company === selectedCompany;
+  const filteredUserFeeback = useMemo(
+    () =>
+      userFeedback.filter((feedback) => {
+        if (selectedCompany) return feedback.company === selectedCompany;
 
-    return feedback;
-  });
+        return feedback;
+      }),
+    [userFeedback, selectedCompany]
+  );
 
   // Filter out repeated companies from hashtag list
-  const hashtagCompanies = userFeedback
-    .map((item) => item.company)
-    .filter((company, index, array) => {
-      return array.indexOf(company) === index;
-    });
+  const hashtagCompanies = useMemo(
+    () =>
+      userFeedback
+        .map((item) => item.company)
+        .filter((company, index, array) => {
+          return array.indexOf(company) === index;
+        }),
+    [userFeedback]
+  );
 
   // Extract Company from Feeback input and remove #hashtag
   const extractCompany = (text: string) => {
