@@ -13,6 +13,13 @@ export default function App() {
   const [userFeedback, setUserFeedback] = useState<Array<UserFeedback>>([]);
   const [status, setStatus] = useState<Status>("loading");
 
+  // Filter out repeated companies from hashtag list
+  const hashtagCompanies = userFeedback
+    .map((item) => item.company.toLowerCase())
+    .filter((company, index, array) => {
+      return array.indexOf(company) === index;
+    });
+
   // Extract Company from Feeback input and remove #hashtag
   const extractCompany = (text: string) => {
     const hashtags = text.match(/#(\w+)/g) || [];
@@ -67,7 +74,7 @@ export default function App() {
         userFeedback={userFeedback}
         handleAddItemToList={handleAddItemToList}
       />
-      <HashtagList />
+      <HashtagList hashtagCompanies={hashtagCompanies} status={status} />
     </div>
   );
 }
