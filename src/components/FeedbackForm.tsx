@@ -10,6 +10,9 @@ export default function FeedbackForm({
   handleAddItemToList,
 }: FeedbackFormProps) {
   const [feedback, setFeedback] = useState("");
+  const [validInput, setValidInput] = useState<boolean>();
+  const [invalidInput, setInvalidInput] = useState<boolean>();
+
   const charsLeft = MAX_CHARACTERS - feedback.length;
   const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = evt.target.value;
@@ -19,14 +22,28 @@ export default function FeedbackForm({
     setFeedback(input);
   };
 
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (feedback.length >= 5 && feedback.includes("#")) {
+      setValidInput(true);
+      setTimeout(() => setValidInput(false), 2000);
+    } else {
+      setInvalidInput(true);
+      setTimeout(() => setInvalidInput(false), 2000);
+      return;
+    }
+
+    handleAddItemToList(feedback);
+    setFeedback("");
+  };
+
   return (
     <form
-      className="form"
-      onSubmit={(evt) => {
-        evt.preventDefault();
-        handleAddItemToList(feedback);
-        setFeedback("");
-      }}
+      onSubmit={handleSubmit}
+      className={`form ${validInput ? "form--valid" : ""} ${
+        invalidInput ? "form--invalid" : ""
+      }`}
     >
       <textarea
         id="feedback-textarea"
